@@ -3,6 +3,7 @@ package main
 import (
 	"basedpocket/base"
 	"basedpocket/cmodels"
+	"basedpocket/services/notif"
 	"basedpocket/services/payment"
 	"log"
 
@@ -20,6 +21,7 @@ func main() {
 
 	cmodels.LoadModels(app, env)
 	payment.LoadPayment(app, env)
+	notif.LoadNotif(app, env)
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
