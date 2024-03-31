@@ -13,6 +13,7 @@ func LoadModels(app *pocketbase.PocketBase, env *base.Env) {
 		// ===================
 		// collections
 		createCustomersCollection(e.App)
+		createNotifsCollection(e.App)
 
 		return nil
 	})

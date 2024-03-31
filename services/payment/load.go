@@ -17,7 +17,7 @@ func LoadPayment(app *pocketbase.PocketBase, env *base.Env) {
 		// routes
 		e.Router.AddRoute(echo.Route{
 			Method: http.MethodPost,
-			Path:   "/webhooks/stripe",
+			Path:   "/api/stripe/webhook",
 			Handler: func(c echo.Context) error {
 				return handleStripeWebhook(e.App, c, env)
 			},
