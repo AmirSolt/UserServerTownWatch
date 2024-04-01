@@ -87,7 +87,7 @@ func createCustomersCollection(app core.App) {
 				Name:     "tier",
 				Type:     schema.FieldTypeNumber,
 				Required: true,
-				Options:  &schema.NumberOptions{NoDecimal: true},
+				Options:  &schema.NumberOptions{},
 			},
 		),
 		Indexes: types.JsonArray[string]{
