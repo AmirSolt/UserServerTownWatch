@@ -8,6 +8,7 @@ import (
 
 	"github.com/getsentry/sentry-go"
 	"github.com/labstack/echo/v5"
+	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/tools/mailer"
 )
@@ -18,7 +19,6 @@ type NotifCreateManyParams struct {
 
 type NotifCreateParams struct {
 	UserID   string `db:"user_id" json:"user_id"`
-	ToEmail  string `db:"to_email" json:"to_email"`
 	Subject  string `db:"subject" json:"subject"`
 	BodyHTML string `db:"body_html" json:"body_html"`
 }
@@ -36,7 +36,15 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 	var notifs []cmodels.Notif
 	for _, param := range notifCreateManyParams.params {
 
-		success := sendEmail(app, param)
+		var user *cmodels.User
+		if err := app.Dao().ModelQuery(user).
+			AndWhere(dbx.HashExp{"id": param.UserID}).
+			Limit(1).
+			One(user); err != nil {
+			cmodels.HandleReadError(err, false)
+		}
+
+		success := sendEmail(app, user.Email, param)
 
 		notifs = append(notifs, cmodels.Notif{
 			User:             param.UserID,
@@ -55,13 +63,13 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 	return ctx.NoContent(http.StatusOK)
 }
 
-func sendEmail(app core.App, params NotifCreateParams) bool {
+func sendEmail(app core.App, toEmail string, params NotifCreateParams) bool {
 	message := &mailer.Message{
 		From: mail.Address{
 			Address: app.Settings().Meta.SenderAddress,
 			Name:    app.Settings().Meta.SenderName,
 		},
-		To:      []mail.Address{{Address: params.ToEmail}},
+		To:      []mail.Address{{Address: toEmail}},
 		Subject: params.Subject,
 		HTML:    params.BodyHTML,
 	}
