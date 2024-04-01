@@ -16,9 +16,12 @@ var _ models.Model = (*Customer)(nil)
 
 type Notif struct {
 	models.BaseModel
-	User     string `db:"user" json:"user"`
-	Subject  string `db:"subject" json:"subject"`
-	BodyHTML string `db:"body_html" json:"body_html"`
+	User             string `db:"user_id" json:"user_id"`
+	ToEmail          string `db:"to_email" json:"to_email"`
+	Subject          string `db:"subject" json:"subject"`
+	BodyHTML         string `db:"body_html" json:"body_html"`
+	SendingAttempted bool   `db:"sending_attempted" json:"sending_attempted"`
+	IsSuccessful     bool   `db:"is_successful" json:"is_successful"`
 }
 
 func (m *Notif) TableName() string {
@@ -71,6 +74,12 @@ func createNotifsCollection(app core.App) {
 				},
 			},
 			&schema.SchemaField{
+				Name:     "to_email",
+				Type:     schema.FieldTypeEmail,
+				Required: true,
+				Options:  &schema.EmailOptions{},
+			},
+			&schema.SchemaField{
 				Name:     "subject",
 				Type:     schema.FieldTypeText,
 				Required: true,
@@ -81,6 +90,18 @@ func createNotifsCollection(app core.App) {
 				Type:     schema.FieldTypeText,
 				Required: true,
 				Options:  &schema.TextOptions{},
+			},
+			&schema.SchemaField{
+				Name:     "sending_attempted",
+				Type:     schema.FieldTypeBool,
+				Required: true,
+				Options:  &schema.BoolOptions{},
+			},
+			&schema.SchemaField{
+				Name:     "is_successful",
+				Type:     schema.FieldTypeBool,
+				Required: true,
+				Options:  &schema.BoolOptions{},
 			},
 		),
 		Indexes: types.JsonArray[string]{
