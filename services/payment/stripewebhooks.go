@@ -47,7 +47,7 @@ func onCustomerCreatedEvent(app core.App, ctx echo.Context, event stripe.Event) 
 
 	var user *cmodels.User
 	if err := app.Dao().ModelQuery(user).
-		AndWhere(dbx.HashExp{"email": stripeCustomer.Email}).
+		AndWhere(dbx.HashExp{"email": &stripeCustomer.Email}).
 		Limit(1).
 		One(user); err != nil {
 		return cmodels.HandleReadError(err, false)
@@ -75,7 +75,7 @@ func onCustomerDeletedEvent(app core.App, ctx echo.Context, event stripe.Event) 
 
 	var customer *cmodels.Customer
 	if err := app.Dao().ModelQuery(customer).
-		AndWhere(dbx.HashExp{"stripe_customer_id": stripeCustomer.ID}).
+		AndWhere(dbx.HashExp{"stripe_customer_id": &stripeCustomer.ID}).
 		Limit(1).
 		One(customer); err != nil {
 		return cmodels.HandleReadError(err, false)
@@ -102,7 +102,7 @@ func onSubscriptionCreatedEvent(app core.App, ctx echo.Context, event stripe.Eve
 
 	var customer *cmodels.Customer
 	if err := app.Dao().ModelQuery(customer).
-		AndWhere(dbx.HashExp{"stripe_customer_id": stripeSubscription.Customer.ID}).
+		AndWhere(dbx.HashExp{"stripe_customer_id": &stripeSubscription.Customer.ID}).
 		Limit(1).
 		One(customer); err != nil {
 		return cmodels.HandleReadError(err, false)
@@ -131,7 +131,7 @@ func onSubscriptionUpdatedEvent(app core.App, ctx echo.Context, event stripe.Eve
 
 	var customer *cmodels.Customer
 	if err := app.Dao().ModelQuery(customer).
-		AndWhere(dbx.HashExp{"stripe_customer_id": stripeSubscription.Customer.ID}).
+		AndWhere(dbx.HashExp{"stripe_customer_id": &stripeSubscription.Customer.ID}).
 		Limit(1).
 		One(customer); err != nil {
 		return cmodels.HandleReadError(err, false)
@@ -154,7 +154,7 @@ func onSubscriptionDeletedEvent(app core.App, ctx echo.Context, event stripe.Eve
 
 	var customer *cmodels.Customer
 	if err := app.Dao().ModelQuery(customer).
-		AndWhere(dbx.HashExp{"stripe_customer_id": stripeSubscription.Customer.ID}).
+		AndWhere(dbx.HashExp{"stripe_customer_id": &stripeSubscription.Customer.ID}).
 		Limit(1).
 		One(customer); err != nil {
 		return cmodels.HandleReadError(err, false)

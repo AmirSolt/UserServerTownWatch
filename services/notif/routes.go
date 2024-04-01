@@ -38,7 +38,7 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 
 		var user *cmodels.User
 		if err := app.Dao().ModelQuery(user).
-			AndWhere(dbx.HashExp{"id": param.UserID}).
+			AndWhere(dbx.HashExp{"id": &param.UserID}).
 			Limit(1).
 			One(user); err != nil {
 			cmodels.HandleReadError(err, false)
