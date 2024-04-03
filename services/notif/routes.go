@@ -46,18 +46,15 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 
 		success := sendEmail(app, user.Email, param)
 
-		notifs = append(notifs, cmodels.Notif{
+		notif := cmodels.Notif{
 			User:             param.UserID,
 			Subject:          param.Subject,
 			BodyHTML:         param.BodyHTML,
 			SendingAttempted: true,
 			IsSuccessful:     success,
-		})
-
-	}
-
-	if err := cmodels.Save(app, notifs); err != nil {
-		return ctx.String(http.StatusInternalServerError, err.Error.Error())
+		}
+		notifs = append(notifs, notif)
+		cmodels.Save(app, notif)
 	}
 
 	return ctx.NoContent(http.StatusOK)
