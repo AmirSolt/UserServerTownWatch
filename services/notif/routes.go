@@ -3,6 +3,7 @@ package notif
 import (
 	"basedpocket/base"
 	"basedpocket/cmodels"
+	"fmt"
 	"net/http"
 	"net/mail"
 
@@ -33,7 +34,8 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 		return ctx.JSON(http.StatusInternalServerError, cerr)
 	}
 
-	var notifs []cmodels.Notif
+	app.Logger().Info(fmt.Sprintf("handleCreateNotifs Params: %+v", notifCreateManyParams))
+
 	for _, param := range notifCreateManyParams.params {
 
 		var user *cmodels.User
@@ -42,6 +44,7 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 			Limit(1).
 			One(&user); err != nil {
 			cmodels.HandleReadError(err, false)
+			continue
 		}
 
 		success := sendEmail(app, user.Email, param)
@@ -53,8 +56,9 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 			SendingAttempted: true,
 			IsSuccessful:     success,
 		}
-		notifs = append(notifs, notif)
-		cmodels.Save(app, notif)
+		if cerr := cmodels.Save(app, notif); cerr != nil {
+			continue
+		}
 	}
 
 	return ctx.NoContent(http.StatusOK)
