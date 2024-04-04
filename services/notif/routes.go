@@ -36,7 +36,7 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 
 	app.Logger().Info(fmt.Sprintf("handleCreateNotifs Params: %+v", notifCreateManyParams))
 
-	for _, param := range notifCreateManyParams.params {
+	for _, param := range notifCreateManyParams.Params {
 
 		var user *cmodels.User
 		if err := app.Dao().ModelQuery(user).
