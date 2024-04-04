@@ -58,7 +58,6 @@ func createNotifsCollection(app core.App) {
 				Type:     schema.FieldTypeRelation,
 				Required: true,
 				Options: &schema.RelationOptions{
-					MaxSelect:     types.Pointer(1),
 					CollectionId:  users.Id,
 					CascadeDelete: true,
 				},
