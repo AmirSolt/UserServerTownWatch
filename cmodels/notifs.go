@@ -16,7 +16,7 @@ var _ models.Model = (*Notif)(nil)
 
 type Notif struct {
 	models.BaseModel
-	User             string `db:"user_id" json:"user_id"`
+	User             string `db:"user" json:"user"`
 	ToEmail          string `db:"to_email" json:"to_email"`
 	Subject          string `db:"subject" json:"subject"`
 	BodyHTML         string `db:"body_html" json:"body_html"`
