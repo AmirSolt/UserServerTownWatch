@@ -30,7 +30,7 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 	if err != nil {
 		eventID := sentry.CaptureException(err)
 		cerr := &base.CError{Message: "Internal Server Error", EventID: *eventID, Error: err}
-		return ctx.String(http.StatusInternalServerError, cerr.Error.Error())
+		return ctx.JSON(http.StatusInternalServerError, cerr)
 	}
 
 	var notifs []cmodels.Notif
