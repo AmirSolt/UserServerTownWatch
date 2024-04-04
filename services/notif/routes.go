@@ -15,7 +15,7 @@ import (
 )
 
 type NotifCreateManyParams struct {
-	params []NotifCreateParams
+	Params []NotifCreateParams `json:"params"`
 }
 
 type NotifCreateParams struct {
