@@ -12,7 +12,7 @@ import (
 
 const notifs string = "notifs"
 
-var _ models.Model = (*Customer)(nil)
+var _ models.Model = (*Notif)(nil)
 
 type Notif struct {
 	models.BaseModel
@@ -27,16 +27,6 @@ type Notif struct {
 func (m *Notif) TableName() string {
 	return notifs // the name of your collection
 }
-
-// =======================================
-
-// func (c *Customer) Find(app core.App, ctx echo.Context, skipNoRowsErr bool) *base.CError {
-// 	return FindOne(app, ctx, c, "")
-// }
-
-// func (c *Customer) Save(app core.App, ctx echo.Context) *base.CError {
-
-// }
 
 // =======================================
 

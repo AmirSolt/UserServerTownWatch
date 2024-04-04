@@ -49,7 +49,7 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 
 		success := sendEmail(app, user.Email, param)
 
-		notif := cmodels.Notif{
+		notif := &cmodels.Notif{
 			User:             param.UserID,
 			Subject:          param.Subject,
 			BodyHTML:         param.BodyHTML,
