@@ -9,7 +9,6 @@ import (
 	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/stripe/stripe-go/v76"
-	"github.com/stripe/stripe-go/v76/customer"
 )
 
 func LoadPayment(app *pocketbase.PocketBase, env *base.Env) {
@@ -30,18 +29,6 @@ func LoadPayment(app *pocketbase.PocketBase, env *base.Env) {
 			},
 		})
 
-		return nil
-	})
-
-	app.OnRecordAfterCreateRequest("users").Add(func(e *core.RecordCreateEvent) error {
-
-		paramsCus := &stripe.CustomerParams{
-			Name: stripe.String(e.Record.Email()),
-		}
-		_, errCus := customer.New(paramsCus)
-		if errCus != nil {
-			return errCus
-		}
 		return nil
 	})
 

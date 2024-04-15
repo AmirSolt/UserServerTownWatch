@@ -3,7 +3,6 @@ package cmodels
 import (
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/models"
@@ -17,10 +16,10 @@ var _ models.Model = (*Customer)(nil)
 
 type Customer struct {
 	models.BaseModel
-	User                 string    `db:"user" json:"user"`
-	StripeCustomerID     string    `db:"stripe_customer_id" json:"stripe_customer_id"`
-	StripeSubscriptionID string    `db:"stripe_subscription_id" json:"stripe_subscription_id"`
-	Tier                 int       `db:"tier" json:"tier"`
+	User                 string `db:"user" json:"user"`
+	StripeCustomerID     string `db:"stripe_customer_id" json:"stripe_customer_id"`
+	StripeSubscriptionID string `db:"stripe_subscription_id" json:"stripe_subscription_id"`
+	Tier                 int    `db:"tier" json:"tier"`
 }
 
 func (m *Customer) TableName() string {
