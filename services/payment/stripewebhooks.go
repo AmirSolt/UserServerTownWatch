@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/labstack/echo/v5"
@@ -53,13 +54,14 @@ func onCustomerCreatedEvent(app core.App, ctx echo.Context, event stripe.Event) 
 		return cmodels.HandleReadError(err, false)
 	}
 
-	customer := &cmodels.Customer{
+	newCustomer := &cmodels.Customer{
 		User:                 user.Id,
 		StripeCustomerID:     stripeCustomer.ID,
 		StripeSubscriptionID: "",
 		Tier:                 0,
+		FreeTrialExpiresAt:   time.Now().Add(time.Duration(24*7) * time.Hour).UTC(),
 	}
-	if err := cmodels.Save(app, customer); err != nil {
+	if err := cmodels.Save(app, newCustomer); err != nil {
 		return err
 	}
 	return nil
