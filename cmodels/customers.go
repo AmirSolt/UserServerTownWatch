@@ -21,7 +21,6 @@ type Customer struct {
 	StripeCustomerID     string    `db:"stripe_customer_id" json:"stripe_customer_id"`
 	StripeSubscriptionID string    `db:"stripe_subscription_id" json:"stripe_subscription_id"`
 	Tier                 int       `db:"tier" json:"tier"`
-	FreeTrialExpiresAt   time.Time `db:"free_trial_expires_at" json:"free_trial_expires_at"`
 }
 
 func (m *Customer) TableName() string {
@@ -90,12 +89,6 @@ func createCustomersCollection(app core.App) {
 				Type:     schema.FieldTypeNumber,
 				Required: true,
 				Options:  &schema.NumberOptions{},
-			},
-			&schema.SchemaField{
-				Name:     "free_trial_expires_at",
-				Type:     schema.FieldTypeDate,
-				Required: true,
-				Options:  &schema.DateOptions{},
 			},
 		),
 		Indexes: types.JsonArray[string]{
