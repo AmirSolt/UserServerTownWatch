@@ -33,7 +33,7 @@ func LoadPayment(app *pocketbase.PocketBase, env *base.Env) {
 		return nil
 	})
 
-	app.OnRecordBeforeCreateRequest("users").Add(func(e *core.RecordCreateEvent) error {
+	app.OnRecordAfterCreateRequest("users").Add(func(e *core.RecordCreateEvent) error {
 
 		paramsCus := &stripe.CustomerParams{
 			Name: stripe.String(e.Record.Email()),
