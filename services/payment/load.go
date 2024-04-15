@@ -14,6 +14,8 @@ import (
 
 func LoadPayment(app *pocketbase.PocketBase, env *base.Env) {
 
+	stripe.Key = env.STRIPE_PRIVATE_KEY
+
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		// ===================
 		// routes
