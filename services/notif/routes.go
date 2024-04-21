@@ -51,6 +51,7 @@ func handleCreateNotifs(app core.App, ctx echo.Context, env *base.Env) error {
 
 		notif := &cmodels.Notif{
 			User:             param.UserID,
+			ToEmail:          user.Email,
 			Subject:          param.Subject,
 			BodyHTML:         param.BodyHTML,
 			SendingAttempted: true,
